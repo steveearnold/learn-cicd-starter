@@ -41,4 +41,4 @@ jobs:
     - name: Build and Push Docker image to Artifact Registry
       run: |
         gcloud builds submit \
-          --tag us-central1-docker.pkg.dev/crypto-stone-4640/notely-ar-repo/notely:latest .
+          --tag us-central1-docker.pkg.dev/crypto-stone-464006-b8/notely-ar-repo/notely:latest .
