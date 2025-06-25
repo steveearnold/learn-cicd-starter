@@ -37,6 +37,7 @@ jobs:
 
     - name: Turso Setup
       run: curl -sSfL https://get.tur.so/install.sh | bash
+      continue-on-error: true
 
     - name: Login to Turso
       run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
