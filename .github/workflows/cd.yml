@@ -21,6 +21,12 @@ jobs:
     - name: Build App
       run: ./scripts/buildprod.sh
 
+    - name: Upload Notely binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: notely
+        path: ./notely  # or ./bin/notely if that's where you build it
+
 
   gcp-deploy:
     name: Deploy to GCP
@@ -34,6 +40,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Download Notely binary
+      uses: actions/download-artifact@v4
+      with:
+        name: notely
 
 
     - id: 'auth'
