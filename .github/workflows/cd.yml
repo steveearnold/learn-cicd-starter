@@ -49,4 +49,4 @@ jobs:
       run: 'gcloud info'
 
     - name: Build Docker and Push to GCP
-      run: gcloud builds submit --tag us-central1-docker.pkg.dev/crypto-stone-464006-b8/notely-ar-repo/ .
+      run: gcloud builds submit --tag us-central1-docker.pkg.dev/crypto-stone-464006-b8/notely-ar-repo/notely:latest .
