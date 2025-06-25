@@ -15,6 +15,7 @@ jobs:
 
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
 
     steps:
     - name: Checkout code
@@ -33,6 +34,13 @@ jobs:
 
     - name: Goose Setup
       run: curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
+
+    - name: Turso CLI Install
+      run: curl -sSf https://get.tur.so/install.sh | bash
+        echo "$HOME/.turso/bin" >> $GITHUB_PATH
+
+    - name: Login to Turso
+      run: turso auth login --token "${TURSO_TOKEN}"
 
     - name: Migrate DB
       run: ./scripts/migrateup.sh
