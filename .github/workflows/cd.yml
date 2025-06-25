@@ -14,9 +14,6 @@ jobs:
       contents: read
       id-token: write
 
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
 
     steps:
     - name: Checkout code
