@@ -8,9 +8,8 @@ import (
 
 var ErrNoAuthHeaderIncluded = errors.New("no authorization header included")
 
-
 func ReturnZero() int {
-    return 0
+	return 0
 }
 
 // GetAPIKey -
