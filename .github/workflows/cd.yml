@@ -35,13 +35,13 @@ jobs:
     - name: Goose Setup
       run: curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
 
-    - name: Turso CLI Install
+    - name: Install Turso CLI (No Auth)
       run: |
-        curl -sSf https://get.tur.so/install.sh | bash
+        TURSO_SKIP_AUTH=1 bash <(curl -sSf https://get.tur.so/install.sh)
         echo "$HOME/.turso/bin" >> $GITHUB_PATH
 
     - name: Login to Turso
-      run: turso auth login --token "${{ secrets.TURSO_TOKEN }}"
+      run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
 
     - name: Migrate DB
       run: ./scripts/migrateup.sh
