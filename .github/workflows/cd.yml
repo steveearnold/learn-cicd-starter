@@ -6,14 +6,18 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Build and Deploy to GCP
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
-    - name: Check out code
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Go
+    - name: Set up Go
       uses: actions/setup-go@v5
       with:
         go-version: "1.23.0"
@@ -21,43 +25,20 @@ jobs:
     - name: Build App
       run: ./scripts/buildprod.sh
 
-    - name: Upload Notely binary
-      uses: actions/upload-artifact@v4
-      with:
-        name: notely
-        path: ./notely  # or ./bin/notely if that's where you build it
 
-
-  gcp-deploy:
-    name: Deploy to GCP
-    runs-on: ubuntu-latest
-
-    # Add "id-token" with the intended permissions.
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Download Notely binary
-      uses: actions/download-artifact@v4
-      with:
-        name: notely
-
-
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v2
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v2'
+    - name: Verify gcloud CLI
+      run: gcloud info
 
-    - name: 'Use gcloud CLI'
-      run: 'gcloud info'
-
-    - name: Build Docker and Push to GCP
-      run: gcloud builds submit --tag us-central1-docker.pkg.dev/crypto-stone-464006-b8/notely-ar-repo/notely:latest .
+    - name: Build and Push Docker image to Artifact Registry
+      run: |
+        gcloud builds submit \
+          --tag us-central1-docker.pkg.dev/crypto-stone-4640/notely-ar-repo/notely:latest .
