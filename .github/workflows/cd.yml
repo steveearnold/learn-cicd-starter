@@ -13,6 +13,9 @@ jobs:
       contents: read
       id-token: write
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -25,6 +28,11 @@ jobs:
     - name: Build App
       run: ./scripts/buildprod.sh
 
+    - name: Goose Setup
+      run: curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
+
+    - name: Migrate DB
+      run: ./scripts/migrateup.sh
 
     - name: Authenticate to Google Cloud
       id: auth
