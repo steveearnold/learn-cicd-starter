@@ -37,10 +37,14 @@ jobs:
 
     - name: Download and install Turso CLI (CI-safe)
       run: |
+        LATEST_URL=$(curl -s https://api.github.com/repos/tursodatabase/turso-cli/releases/latest \
+        | grep "browser_download_url" \
+        | grep "x86_64-unknown-linux-gnu.tar.gz" \
+        | cut -d '"' -f 4)
+        echo "Downloading Turso CLI from $LATEST_URL"
         mkdir -p "$HOME/.turso/bin"
-        curl -fsSL https://github.com/tursodatabase/turso-cli/releases/latest/download/turso-x86_64-unknown-linux-gnu.tar.gz | tar -xz -C "$HOME/.turso/bin"
+        curl -fsSL "$LATEST_URL" | tar -xz -C "$HOME/.turso/bin"
         echo "$HOME/.turso/bin" >> $GITHUB_PATH
-
 
     - name: Login to Turso
       run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
