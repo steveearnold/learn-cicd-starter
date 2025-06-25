@@ -35,6 +35,9 @@ jobs:
     - name: Goose Setup
       run: go install github.com/pressly/goose/v3/cmd/goose@latest
 
+    - name: Turso Setup
+      run: curl -sSfL https://get.tur.so/install.sh | bash
+
     - name: Login to Turso
       run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
 
