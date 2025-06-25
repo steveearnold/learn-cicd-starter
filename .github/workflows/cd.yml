@@ -41,8 +41,10 @@ jobs:
       continue-on-error: true
 
     - name: Turso Tweaks
-      run: source /home/runner/.bashrc |
-           echo "$HOME/.turso/bin" >> $GITHUB_PATH
+      run: source /home/runner/.bashrc
+
+    - name: Turso Path
+      run: echo "$HOME/.turso/bin" >> $GITHUB_PATH
 
     - name: Login to Turso
       run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
