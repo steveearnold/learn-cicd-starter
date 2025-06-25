@@ -6,7 +6,7 @@ import (
 
 // ReturnZero returns the integer 0.
 func ReturnZero() int {
-    return 1
+    return 0
 }
 
 func main() {
