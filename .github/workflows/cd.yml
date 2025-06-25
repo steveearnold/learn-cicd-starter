@@ -34,9 +34,6 @@ jobs:
     - name: Goose Setup
       run: curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
 
-    - name: Turso Setup
-      run: curl -sSfL https://get.tur.so/install.sh | bash
-
     - name: Migrate DB
       run: ./scripts/migrateup.sh
 
