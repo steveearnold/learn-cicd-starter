@@ -8,7 +8,8 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     permissions:
       contents: read
       id-token: write
@@ -21,10 +22,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Create .env file
-      run: echo "DATABASE_URL=${DATABASE_URL}" > .env
-           echo "TURSO_INSTALL_SKIP_SIGNUP=1" > .env
-
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
@@ -35,19 +32,6 @@ jobs:
 
     - name: Goose Setup
       run: go install github.com/pressly/goose/v3/cmd/goose@latest
-
-    - name: Turso Setup
-      run: curl -sSfL https://get.tur.so/install.sh | bash
-      continue-on-error: true
-
-    - name: Turso Tweaks
-      run: source /home/runner/.bashrc
-
-    - name: Turso Path
-      run: echo "$HOME/.turso/bin" >> $GITHUB_PATH
-
-    - name: Login to Turso
-      run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
 
     - name: Migrate DB
       run: ./scripts/migrateup.sh
