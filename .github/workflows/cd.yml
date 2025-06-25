@@ -33,18 +33,7 @@ jobs:
       run: ./scripts/buildprod.sh
 
     - name: Goose Setup
-      run: curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
-
-    - name: Download and install Turso CLI (CI-safe)
-      run: |
-        LATEST_URL=$(curl -s https://api.github.com/repos/tursodatabase/turso-cli/releases/latest \
-          | grep "browser_download_url" \
-          | grep "x86_64-unknown-linux-gnu.tar.gz" \
-          | cut -d '"' -f 4)
-        echo "Downloading Turso CLI from $LATEST_URL"
-        mkdir -p "$HOME/.turso/bin"
-        curl -fsSL "$LATEST_URL" | tar -xz -C "$HOME/.turso/bin"
-        echo "$HOME/.turso/bin" >> $GITHUB_PATH
+      run: go install github.com/pressly/goose/v3/cmd/goose@latest
 
     - name: Login to Turso
       run: turso auth login --headless --token "${{ secrets.TURSO_TOKEN }}"
