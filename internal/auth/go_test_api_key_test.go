@@ -1,16 +1,15 @@
 package auth
 
 import (
-    "fmt"
+	"fmt"
 )
 
 // ReturnZero returns the integer 0.
 func ReturnZero() int {
-    return 0
+	return 0
 }
 
 func main() {
-    result := ReturnZero()
-    fmt.Println("ReturnZero returned:", result)
+	result := ReturnZero()
+	fmt.Println("ReturnZero returned:", result)
 }
-
